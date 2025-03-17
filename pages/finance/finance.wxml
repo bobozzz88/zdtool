@@ -1,0 +1,415 @@
+<view class="container">
+  <!-- 顶部固定区域 -->
+  <view class="fixed-header">
+    <!-- 月份选择器 -->
+    <view class="month-selector">
+      <text class="arrow" bindtap="previousMonth">◀</text>
+      <text class="month-text">{{currentYear}}年{{currentMonth}}月</text>
+      <text class="arrow" bindtap="nextMonth">▶</text>
+    </view>
+    
+    <!-- 记账按钮 -->
+    <view class="add-btn" bindtap="addRecord">
+      <text class="icon">📝</text>
+    </view>
+  </view>
+
+  <!-- 可滚动区域 -->
+  <scroll-view 
+    class="scrollable-content" 
+    scroll-y="true"
+    refresher-enabled="{{true}}"
+    refresher-triggered="{{isRefreshing}}"
+    bindrefresherrefresh="onRefresh"
+    bindscrolltolower="onLoadMore">
+    
+    <!-- 月度统计卡片 -->
+    <view class="overview-card">
+      <view class="amount-row">
+        <view class="amount-item">
+          <text class="label">本月支出</text>
+          <text class="value expense">¥{{monthlyExpense}}</text>
+        </view>
+        <view class="amount-item">
+          <text class="label">本月收入</text>
+          <text class="value income">¥{{monthlyIncome}}</text>
+        </view>
+      </view>
+      <view class="amount-row">
+        <view class="amount-item">
+          <text class="label">预算剩余</text>
+          <text class="value">¥{{monthlyBudget - monthlyExpense}}</text>
+        </view>
+        <view class="amount-item">
+          <text class="label">结余</text>
+          <text class="value {{monthlyBalance >= 0 ? 'income' : 'expense'}}">¥{{monthlyBalance}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 预算进度卡片 -->
+    <view class="budget-card">
+      <view class="card-header">
+        <text class="card-title">本月预算</text>
+        <text class="action-text" bindtap="manageBudget">设置</text>
+      </view>
+      <view class="budget-content">
+        <view class="budget-info">
+          <text>已用 ¥{{monthlyExpense}}</text>
+          <text>总预算 ¥{{monthlyBudget}}</text>
+        </view>
+        <view class="progress-container">
+          <progress 
+            percent="{{budgetProgress}}" 
+            stroke-width="12" 
+            color="{{budgetProgress > 80 ? '#ff4d4f' : (budgetProgress > 50 ? '#faad14' : '#52c41a')}}"
+            active active-mode="forwards"/>
+          <text class="budget-percentage {{budgetProgress > 80 ? 'danger' : (budgetProgress > 50 ? 'warning' : 'normal')}}">
+            {{budgetProgress}}%
+          </text>
+        </view>
+        
+        <!-- 分类预算展示 -->
+        <view class="category-budget-list" wx:if="{{budgetCategories && budgetCategories.length > 0}}">
+          <view class="category-budget-title">分类预算使用情况</view>
+          <view class="category-budget-row" wx:for="{{budgetCategories}}" wx:key="name" wx:if="{{item.budget > 0}}">
+            <view class="category-budget-info">
+              <text class="category-icon">{{item.icon}}</text>
+              <text class="category-name">{{item.name}}</text>
+              <text class="category-amount">¥{{item.used || 0}}/¥{{item.budget}}</text>
+            </view>
+            <view class="category-progress-container">
+              <progress 
+                percent="{{item.progress || 0}}" 
+                stroke-width="8" 
+                color="{{item.progress > 80 ? '#ff4d4f' : (item.progress > 50 ? '#faad14' : '#52c41a')}}"
+                active active-mode="forwards"/>
+            </view>
+          </view>
+          <view class="no-category-budget" wx:if="{{!hasCategoryBudgets}}">
+            <text>暂无分类预算，点击"设置"添加</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 账单明细 -->
+    <view class="records-card">
+      <view class="card-header">
+        <text class="card-title">账单明细</text>
+        <view class="header-actions">
+          <text class="action-text" bindtap="showFilter">筛选</text>
+        </view>
+      </view>
+
+      <!-- 空状态 -->
+      <view class="empty-state" wx:if="{{!records || records.length === 0}}">
+        <image class="empty-icon" src="/images/empty.png" mode="aspectFit"></image>
+        <text class="empty-text">暂无账单记录</text>
+        <text class="empty-desc">点击右上角"+"添加一笔新账单</text>
+      </view>
+
+      <!-- 账单列表 -->
+      <view class="records-list" wx:else>
+        <block wx:for="{{records}}" wx:key="date">
+          <view class="date-group">
+            <view class="date-header">
+              <text class="date">{{item.date}}</text>
+              <view class="date-summary">
+                <block wx:if="{{item.totalExpense > 0}}">
+                  <text class="expense">支出 ¥{{item.totalExpense}}</text>
+                </block>
+                <block wx:if="{{item.totalIncome > 0}}">
+                  <text class="income">收入 ¥{{item.totalIncome}}</text>
+                </block>
+              </view>
+            </view>
+            
+            <view class="records-group">
+              <movable-area class="record-item-wrap" 
+                           wx:for="{{item.items}}" 
+                           wx:key="id" 
+                           wx:for-item="record">
+                <movable-view direction="horizontal" 
+                             class="record-item"
+                             bindtap="viewRecord" 
+                             data-id="{{record.id}}"
+                             out-of-bounds="{{true}}"
+                             damping="20"
+                             friction="2"
+                             x="{{0}}">
+                  <view class="record-icon">{{record.icon}}</view>
+                  <view class="record-content">
+                    <view class="record-category">{{record.category}}</view>
+                    <view class="record-note" wx:if="{{record.note}}">{{record.note}}</view>
+                  </view>
+                  <view class="record-amount {{record.type === 'expense' ? 'expense' : 'income'}}">
+                    {{record.type === 'expense' ? '-' : '+'}}¥{{record.amount}}
+                  </view>
+                </movable-view>
+                <view class="record-item-del" bindtap="deleteRecord" data-id="{{record.id}}">
+                  删除
+                </view>
+              </movable-area>
+            </view>
+          </view>
+        </block>
+      </view>
+    </view>
+    
+    <!-- 加载更多 -->
+    <view class="loading-more" wx:if="{{hasMore}}">
+      <text class="loading-text">加载中...</text>
+    </view>
+    
+    <!-- 没有更多数据 -->
+    <view class="no-more" wx:elif="{{records.length > 0}}">
+      <text class="no-more-text">没有更多数据了</text>
+    </view>
+  </scroll-view>
+
+  <!-- 记账弹窗 -->
+  <view class="modal {{showRecordModal ? 'show' : ''}}" catchtouchmove="true">
+    <view class="modal-mask" bindtap="hideRecordModal"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">记一笔</text>
+        <text class="close" bindtap="hideRecordModal">×</text>
+      </view>
+      <view class="modal-body">
+        <view class="type-selector">
+          <view class="type-btn {{recordType === 'expense' ? 'active' : ''}}" 
+                bindtap="selectType" data-type="expense">支出</view>
+          <view class="type-btn {{recordType === 'income' ? 'active' : ''}}" 
+                bindtap="selectType" data-type="income">收入</view>
+        </view>
+        
+        <view class="form-item">
+          <input type="digit" class="amount-input" 
+                 placeholder="请输入金额" 
+                 value="{{newRecord.amount}}"
+                 bindinput="inputAmount"/>
+        </view>
+
+        <view class="category-grid">
+          <block wx:for="{{recordType === 'expense' ? expenseCategories : incomeCategories}}" 
+                 wx:key="name">
+            <view class="category-btn {{newRecord.category === item.name ? 'active' : ''}}"
+                  bindtap="selectCategory" 
+                  data-category="{{item.name}}" 
+                  data-icon="{{item.icon}}">
+              <text class="icon">{{item.icon}}</text>
+              <text>{{item.name}}</text>
+            </view>
+          </block>
+        </view>
+
+        <view class="form-item">
+          <input class="note-input" 
+                 placeholder="添加备注" 
+                 value="{{newRecord.note}}"
+                 bindinput="inputNote"/>
+        </view>
+
+        <view class="form-item">
+          <picker mode="date" value="{{newRecord.date}}" bindchange="dateChange">
+            <view class="picker">
+              <text class="label">日期</text>
+              <text>{{newRecord.date || '请选择日期'}}</text>
+            </view>
+          </picker>
+        </view>
+
+        <view class="upload-section">
+          <view class="upload-btn" bindtap="uploadReceipt">
+            <text class="icon">📷</text>
+            <text>上传票据</text>
+          </view>
+          <!-- 显示已上传的票据图片 -->
+          <view class="uploaded-receipts" wx:if="{{newRecord.receiptImages.length > 0}}">
+            <view class="receipt-item" wx:for="{{newRecord.receiptImages}}" wx:key="*this">
+              <image 
+                class="receipt-thumbnail" 
+                src="{{item}}" 
+                mode="aspectFill"
+                data-index="{{index}}"
+                bindtap="previewUploadedReceipt"></image>
+              <text class="remove-receipt" 
+                    data-index="{{index}}"
+                    bindtap="removeUploadedReceipt">×</text>
+            </view>
+          </view>
+        </view>
+
+        <button class="submit-btn" bindtap="saveRecord">保存</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 预算设置弹窗 -->
+  <view class="modal {{showBudgetModal ? 'show' : ''}}" catchtouchmove="true">
+    <view class="modal-mask" bindtap="hideBudgetModal"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">预算设置</text>
+        <text class="close" bindtap="hideBudgetModal">×</text>
+      </view>
+      <view class="modal-body">
+        <view class="form-item">
+          <text class="label">月度总预算</text>
+          <input type="digit" class="budget-input" 
+                 placeholder="请输入预算金额" 
+                 value="{{newBudget}}"
+                 bindinput="inputBudget"/>
+        </view>
+
+        <view class="category-budgets">
+          <text class="subtitle">分类预算</text>
+          <block wx:for="{{budgetCategories}}" wx:key="name" wx:for-index="idx">
+            <view class="category-budget-item">
+              <view class="category-info">
+                <text class="icon">{{item.icon}}</text>
+                <text>{{item.name}}</text>
+              </view>
+              <input type="digit" class="category-budget-input" 
+                     placeholder="预算金额" 
+                     value="{{item.budget}}"
+                     bindinput="inputCategoryBudget"
+                     data-index="{{idx}}"/>
+            </view>
+          </block>
+        </view>
+
+        <button class="submit-btn" bindtap="saveBudget">保存</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选弹窗 -->
+  <view class="modal {{showFilterModal ? 'show' : ''}}" catchtouchmove="true">
+    <view class="modal-mask" bindtap="hideFilterModal"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">筛选</text>
+        <text class="close" bindtap="hideFilterModal">×</text>
+      </view>
+      <view class="modal-body">
+        <view class="filter-type">
+          <text class="subtitle">类型</text>
+          <view class="filter-type-btns">
+            <view class="filter-type-btn {{filter.type === 'all' ? 'active' : ''}}" 
+                  bindtap="selectFilterType" data-type="all">全部</view>
+            <view class="filter-type-btn {{filter.type === 'expense' ? 'active' : ''}}" 
+                  bindtap="selectFilterType" data-type="expense">支出</view>
+            <view class="filter-type-btn {{filter.type === 'income' ? 'active' : ''}}" 
+                  bindtap="selectFilterType" data-type="income">收入</view>
+          </view>
+        </view>
+
+        <view class="filter-date">
+          <text class="subtitle">日期范围</text>
+          <view class="date-range">
+            <picker mode="date" value="{{filter.startDate}}" bindchange="startDateChange">
+              <view class="date-picker">
+                <text>{{filter.startDate || '开始日期'}}</text>
+              </view>
+            </picker>
+            <text class="date-separator">至</text>
+            <picker mode="date" value="{{filter.endDate}}" bindchange="endDateChange">
+              <view class="date-picker">
+                <text>{{filter.endDate || '结束日期'}}</text>
+              </view>
+            </picker>
+          </view>
+        </view>
+
+        <view class="filter-amount">
+          <text class="subtitle">金额范围</text>
+          <view class="amount-range">
+            <input type="digit" class="amount-input" 
+                   placeholder="最小金额" 
+                   value="{{filter.minAmount}}"
+                   bindinput="inputMinAmount"/>
+            <text class="amount-separator">至</text>
+            <input type="digit" class="amount-input" 
+                   placeholder="最大金额" 
+                   value="{{filter.maxAmount}}"
+                   bindinput="inputMaxAmount"/>
+          </view>
+        </view>
+
+        <view class="filter-actions">
+          <button class="reset-btn" bindtap="resetFilter">重置</button>
+          <button class="apply-btn" bindtap="applyFilter">应用</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 记录详情弹窗 -->
+  <view class="modal {{showRecordDetailModal ? 'show' : ''}}" catchtouchmove="true">
+    <view class="modal-mask" bindtap="hideRecordDetail"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">账单详情</text>
+        <text class="close" bindtap="hideRecordDetail">×</text>
+      </view>
+      <view class="modal-body">
+        <view class="record-detail">
+          <view class="record-detail-header">
+            <view class="record-detail-icon">{{currentRecord.icon}}</view>
+            <view class="record-detail-type {{currentRecord.type === 'expense' ? 'expense' : 'income'}}">
+              {{currentRecord.type === 'expense' ? '支出' : '收入'}}
+            </view>
+          </view>
+          
+          <view class="record-detail-amount {{currentRecord.type === 'expense' ? 'expense' : 'income'}}">
+            {{currentRecord.type === 'expense' ? '-' : '+'}}¥{{currentRecord.amount}}
+          </view>
+          
+          <view class="record-detail-info">
+            <view class="detail-item">
+              <text class="detail-label">分类</text>
+              <text class="detail-value">{{currentRecord.category}}</text>
+            </view>
+            
+            <view class="detail-item">
+              <text class="detail-label">日期</text>
+              <text class="detail-value">{{currentRecord.date}}</text>
+            </view>
+            
+            <view class="detail-item" wx:if="{{currentRecord.note}}">
+              <text class="detail-label">备注</text>
+              <text class="detail-value">{{currentRecord.note}}</text>
+            </view>
+            
+            <view class="detail-item">
+              <text class="detail-label">创建时间</text>
+              <text class="detail-value">{{currentRecord.createTimeFormatted}}</text>
+            </view>
+          </view>
+          
+          <!-- 添加票据图片显示 -->
+          <view class="receipt-image-container" wx:if="{{currentRecord.receiptImages.length > 0}}">
+            <text class="receipt-title">票据图片</text>
+            <view class="receipt-grid">
+              <view class="receipt-item" wx:for="{{currentRecord.receiptImages}}" wx:key="*this">
+                <image 
+                  class="receipt-image" 
+                  src="{{item}}" 
+                  mode="aspectFill"
+                  data-index="{{index}}"
+                  bindtap="viewReceiptImage"></image>
+              </view>
+            </view>
+          </view>
+          
+          <view class="record-detail-actions">
+            <button class="detail-action-btn edit" bindtap="editRecord">编辑</button>
+            <button class="detail-action-btn delete" bindtap="deleteRecordFromDetail">删除</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

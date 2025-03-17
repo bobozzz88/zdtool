@@ -1,0 +1,76 @@
+.container {
+  padding: 20rpx;
+}
+
+.header {
+  padding: 20rpx 0;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.task-list {
+  margin-top: 20rpx;
+}
+
+.task-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  background-color: #fff;
+  border-radius: 10rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.task-info {
+  flex: 1;
+}
+
+.task-title {
+  font-size: 32rpx;
+  color: #333;
+  display: block;
+}
+
+.task-assignee {
+  font-size: 24rpx;
+  color: #666;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.task-deadline {
+  font-size: 24rpx;
+  color: #999;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.task-status {
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+  font-size: 24rpx;
+  color: #ff4d4f;
+  background-color: #fff1f0;
+}
+
+.task-status.completed {
+  color: #3cc51f;
+  background-color: #f6ffed;
+}
+
+.add-btn {
+  position: fixed;
+  bottom: 30rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #3cc51f;
+  color: #fff;
+  padding: 20rpx 60rpx;
+  border-radius: 30rpx;
+  box-shadow: 0 4rpx 10rpx rgba(60, 197, 31, 0.3);
+}

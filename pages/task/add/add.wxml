@@ -1,0 +1,21 @@
+<view class="container">
+  <view class="form">
+    <view class="form-item">
+      <text class="label">任务标题</text>
+      <input class="input" placeholder="请输入任务标题" value="{{title}}" bindinput="onTitleInput"/>
+    </view>
+    <view class="form-item">
+      <text class="label">负责人</text>
+      <input class="input" placeholder="请输入负责人" value="{{assignee}}" bindinput="onAssigneeInput"/>
+    </view>
+    <view class="form-item">
+      <text class="label">截止日期</text>
+      <picker mode="date" value="{{deadline}}" bindchange="onDateChange">
+        <view class="picker">
+          {{deadline || '请选择截止日期'}}
+        </view>
+      </picker>
+    </view>
+    <button class="submit-btn" bindtap="submitTask">保存任务</button>
+  </view>
+</view>

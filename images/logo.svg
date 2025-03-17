@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- 背景圆形 -->
+    <circle cx="100" cy="100" r="90" fill="url(#gradient)" />
+    
+    <!-- 房屋轮廓 -->
+    <path d="M60 120V90L100 60L140 90V120H60Z" fill="white" />
+    
+    <!-- 智能记账符号 -->
+    <path d="M85 100H115M100 85V115" stroke="#4facfe" stroke-width="8" stroke-linecap="round" />
+    
+    <!-- 圆形装饰 -->
+    <circle cx="100" cy="100" r="40" stroke="white" stroke-width="4" stroke-dasharray="4 4" />
+    
+    <!-- 渐变定义 -->
+    <defs>
+        <linearGradient id="gradient" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#4facfe"/>
+            <stop offset="100%" stop-color="#00f2fe"/>
+        </linearGradient>
+    </defs>
+</svg> 

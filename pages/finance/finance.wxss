@@ -1,0 +1,1143 @@
+.container {
+  min-height: 100vh;
+  background: #f5f7fa;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 固定头部 */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: #fff;
+  padding: 20rpx 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.month-selector {
+  display: flex;
+  align-items: center;
+  background: #f5f7fa;
+  padding: 12rpx 24rpx;
+  border-radius: 32rpx;
+}
+
+.month-text {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333;
+  margin: 0 20rpx;
+}
+
+.arrow {
+  font-size: 24rpx;
+  color: #666;
+  padding: 10rpx;
+}
+
+.add-btn {
+  width: 80rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6rpx 20rpx rgba(79, 172, 254, 0.3);
+}
+
+.add-btn .icon {
+  font-size: 40rpx;
+  color: #fff;
+}
+
+/* 可滚动内容区 */
+.scrollable-content {
+  position: absolute;
+  top: 120rpx;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20rpx;
+  padding-bottom: 40rpx;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 卡片通用样式 */
+.overview-card,
+.budget-card,
+.records-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 月度概览卡片 */
+.amount-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.amount-row:last-child {
+  margin-bottom: 0;
+}
+
+.amount-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.amount-item .label {
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.amount-item .value {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.amount-item .value.expense {
+  color: #ff4d4f;
+}
+
+.amount-item .value.income {
+  color: #52c41a;
+}
+
+/* 预算卡片 */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.action-text {
+  font-size: 28rpx;
+  color: #4facfe;
+  padding: 10rpx 20rpx;
+}
+
+.budget-content {
+  position: relative;
+}
+
+.budget-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 16rpx;
+}
+
+.progress-container {
+  position: relative;
+  margin-top: 10rpx;
+}
+
+.budget-percentage {
+  position: absolute;
+  right: 10rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 32rpx;
+  font-weight: 900;
+  color: #fff;
+  z-index: 10;
+  padding: 0 10rpx;
+  text-shadow: 
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000,
+    0px 2px 4px rgba(0,0,0,0.5);
+}
+
+.budget-percentage.normal {
+  color: #fff;
+}
+
+.budget-percentage.warning {
+  color: #fff;
+}
+
+.budget-percentage.danger {
+  color: #fff;
+}
+
+/* 预算进度条 */
+.budget-card progress {
+  border-radius: 999rpx;
+  overflow: hidden;
+}
+
+/* 分类预算展示 */
+.category-budget-list {
+  margin-top: 30rpx;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 20rpx;
+}
+
+.category-budget-title {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 20rpx;
+}
+
+.category-budget-row {
+  margin-bottom: 16rpx;
+}
+
+.category-budget-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+
+.category-icon {
+  margin-right: 10rpx;
+  font-size: 28rpx;
+}
+
+.category-name {
+  flex: 1;
+  font-size: 26rpx;
+  color: #333;
+}
+
+.category-amount {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.category-progress-container {
+  width: 100%;
+}
+
+.no-category-budget {
+  text-align: center;
+  color: #999;
+  font-size: 24rpx;
+  padding: 20rpx 0;
+}
+
+/* 账单列表 */
+.records-list {
+  margin-bottom: 30rpx;
+}
+
+.date-group {
+  margin-bottom: 30rpx;
+}
+
+.date-group:last-child {
+  margin-bottom: 60rpx;
+}
+
+.date-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.date {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.date-summary {
+  display: flex;
+  gap: 20rpx;
+}
+
+.date-summary .expense,
+.date-summary .income {
+  font-size: 26rpx;
+}
+
+.date-summary .expense {
+  color: #ff4d4f;
+}
+
+.date-summary .income {
+  color: #52c41a;
+}
+
+.records-group {
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
+.record-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background: #fff;
+  margin-bottom: 2rpx;
+  transition: background-color 0.2s ease;
+}
+
+.record-item:last-child {
+  margin-bottom: 0;
+}
+
+.record-item:active {
+  background-color: #f5f7fa;
+}
+
+.record-icon {
+  width: 80rpx;
+  height: 80rpx;
+  background: #f0f2f5;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.record-content {
+  flex: 1;
+  margin: 0 20rpx;
+}
+
+.record-category {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 4rpx;
+}
+
+.record-note {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.record-amount {
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.record-amount.expense {
+  color: #ff4d4f;
+}
+
+.record-amount.income {
+  color: #52c41a;
+}
+
+/* 空状态 */
+.empty-state {
+  padding: 40rpx 30rpx;
+  text-align: center;
+  background: #fff;
+  border-radius: 20rpx;
+  margin-top: 20rpx;
+}
+
+.empty-icon {
+  width: 160rpx;
+  height: 160rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+  display: block;
+}
+
+.empty-desc {
+  font-size: 26rpx;
+  color: #999;
+  display: block;
+}
+
+/* 加载更多 */
+.loading-more {
+  padding: 24rpx 0;
+  text-align: center;
+  color: #999;
+  font-size: 24rpx;
+  background: transparent;
+}
+
+.loading-text {
+  color: #999;
+  font-size: 26rpx;
+}
+
+.loading-text::before {
+  content: '';
+  display: inline-block;
+  width: 30rpx;
+  height: 30rpx;
+  border: 4rpx solid #f0f0f0;
+  border-top-color: #4facfe;
+  border-radius: 50%;
+  margin-right: 10rpx;
+  vertical-align: middle;
+  animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 空状态按钮 */
+.empty-btn {
+  margin-top: 30rpx;
+  display: inline-flex;
+  align-items: center;
+  padding: 20rpx 40rpx;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  border-radius: 40rpx;
+  color: #fff;
+  font-size: 28rpx;
+  box-shadow: 0 6rpx 20rpx rgba(79, 172, 254, 0.3);
+}
+
+.empty-btn .icon {
+  margin-right: 10rpx;
+  font-size: 32rpx;
+}
+
+/* 无更多数据 */
+.no-more {
+  padding: 24rpx 0;
+  margin-bottom: 60rpx;
+  text-align: center;
+  color: #999;
+  font-size: 24rpx;
+  background: transparent;
+}
+
+.no-more::before,
+.no-more::after {
+  content: '';
+  display: inline-block;
+  width: 100rpx;
+  height: 2rpx;
+  background: #eee;
+  margin: 0 20rpx;
+  vertical-align: middle;
+}
+
+/* 修改记录项样式以支持滑动删除 */
+.record-item-wrap {
+  width: 100%;
+  height: auto;
+  min-height: 120rpx;
+  background: #fff;
+  margin-bottom: 2rpx;
+  position: relative;
+}
+
+.record-item {
+  width: 100%;
+  min-height: 120rpx;
+  background: #fff;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  box-sizing: border-box;
+}
+
+.record-item-del {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120rpx;
+  height: 100%;
+  background: #ff4d4f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  z-index: 1;
+}
+
+/* 优化滚动区域 */
+.scrollable-content {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 优化记录项点击效果 */
+.record-item {
+  transition: background-color 0.2s ease;
+}
+
+.record-item:active {
+  background-color: #f5f7fa;
+}
+
+/* 弹出框基础样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 30rpx 30rpx calc(30rpx + constant(safe-area-inset-bottom));
+  padding: 30rpx 30rpx calc(30rpx + env(safe-area-inset-bottom));
+}
+
+.modal.show .modal-content {
+  transform: translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding: 0 10rpx;
+}
+
+.modal-title {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.close {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  color: #999;
+  margin: -16rpx;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+}
+
+.close:active {
+  background-color: #f5f5f5;
+}
+
+.modal-body {
+  max-height: calc(90vh - constant(safe-area-inset-bottom));
+  max-height: calc(90vh - env(safe-area-inset-bottom));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 0 10rpx;
+}
+
+/* 优化滚动条样式 */
+.modal-body::-webkit-scrollbar {
+  width: 6rpx;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 3rpx;
+}
+
+/* 记账弹窗样式 */
+.type-selector {
+  display: flex;
+  margin-bottom: 30rpx;
+  background: #f5f7fa;
+  border-radius: 16rpx;
+  padding: 4rpx;
+}
+
+.type-btn {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+}
+
+.type-btn.active {
+  background: #4facfe;
+  color: #fff;
+}
+
+.form-item {
+  margin-bottom: 20rpx;
+}
+
+.amount-input {
+  width: 100%;
+  height: 88rpx;
+  background: #f5f7fa;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 32rpx;
+  color: #333;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.category-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  background: #f5f7fa;
+  border-radius: 16rpx;
+  transition: all 0.3s ease;
+}
+
+.category-btn.active {
+  background: #4facfe;
+  color: #fff;
+}
+
+.category-btn .icon {
+  font-size: 40rpx;
+  margin-bottom: 8rpx;
+}
+
+.note-input {
+  width: 100%;
+  height: 88rpx;
+  background: #f5f7fa;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.picker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 88rpx;
+  background: #f5f7fa;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 上传区域样式 */
+.upload-section {
+  margin-bottom: 30rpx;
+}
+
+.upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 88rpx;
+  background: #f5f7fa;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.upload-btn .icon {
+  margin-right: 8rpx;
+}
+
+.uploaded-receipts {
+  margin-top: 20rpx;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20rpx;
+}
+
+.receipt-item {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+}
+
+.receipt-thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.remove-receipt {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40rpx;
+  height: 40rpx;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  border-radius: 0 12rpx 0 12rpx;
+}
+
+/* 记录详情弹窗样式 */
+.record-detail {
+  padding: 20rpx 0;
+}
+
+.record-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30rpx;
+}
+
+.record-detail-icon {
+  width: 100rpx;
+  height: 100rpx;
+  background: #f0f2f5;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50rpx;
+  margin-right: 20rpx;
+}
+
+.record-detail-type {
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 10rpx 30rpx;
+  border-radius: 30rpx;
+  color: #fff;
+}
+
+.record-detail-type.expense {
+  background: #ff4d4f;
+}
+
+.record-detail-type.income {
+  background: #52c41a;
+}
+
+.record-detail-amount {
+  font-size: 60rpx;
+  font-weight: bold;
+  text-align: center;
+  margin: 30rpx 0;
+}
+
+.record-detail-amount.expense {
+  color: #ff4d4f;
+}
+
+.record-detail-amount.income {
+  color: #52c41a;
+}
+
+.record-detail-info {
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  color: #999;
+  font-size: 28rpx;
+}
+
+.detail-value {
+  color: #333;
+  font-size: 28rpx;
+  font-weight: 500;
+  max-width: 70%;
+  text-align: right;
+  word-break: break-all;
+}
+
+/* 预算设置弹窗样式 */
+.budget-input {
+  width: 100%;
+  height: 88rpx;
+  background: #f5f7fa;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 32rpx;
+  color: #333;
+  margin-bottom: 30rpx;
+}
+
+.category-budgets {
+  margin-bottom: 30rpx;
+}
+
+.category-budget-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.category-info {
+  display: flex;
+  align-items: center;
+  width: 200rpx;
+}
+
+.category-info .icon {
+  margin-right: 8rpx;
+}
+
+.category-budget-input {
+  flex: 1;
+  height: 72rpx;
+  background: #f5f7fa;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 筛选弹窗样式 */
+.filter-section {
+  margin-bottom: 30rpx;
+}
+
+.filter-title {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 16rpx;
+}
+
+.filter-type-btns {
+  display: flex;
+  background: #f5f7fa;
+  border-radius: 16rpx;
+  padding: 4rpx;
+}
+
+.filter-type-btn {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  border-radius: 12rpx;
+}
+
+.filter-type-btn.active {
+  background: #4facfe;
+  color: #fff;
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+}
+
+.date-picker {
+  flex: 1;
+  height: 72rpx;
+  background: #f5f7fa;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.date-separator {
+  margin: 0 20rpx;
+  color: #999;
+}
+
+.amount-range {
+  display: flex;
+  align-items: center;
+}
+
+.amount-range-input {
+  flex: 1;
+  height: 72rpx;
+  background: #f5f7fa;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #333;
+}
+
+/* 底部操作按钮 */
+.modal-footer {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20rpx 10rpx calc(20rpx + constant(safe-area-inset-bottom));
+  padding: 20rpx 10rpx calc(20rpx + env(safe-area-inset-bottom));
+  background: #fff;
+  z-index: 10;
+  margin: 0 -10rpx;
+}
+
+.footer-btns {
+  display: flex;
+  gap: 20rpx;
+}
+
+.footer-btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 16rpx;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.footer-btn.primary {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: #fff;
+}
+
+.footer-btn.secondary {
+  background: #f5f7fa;
+  color: #666;
+}
+
+.footer-btn.danger {
+  background: #fff1f0;
+  color: #ff4d4f;
+}
+
+.footer-btn:active {
+  opacity: 0.9;
+}
+
+/* 适配不同屏幕尺寸 */
+@media screen and (max-height: 700px) {
+  .modal-content {
+    padding-top: 20rpx;
+  }
+  
+  .modal-header {
+    margin-bottom: 20rpx;
+  }
+  
+  .modal-body {
+    max-height: 75vh;
+  }
+}
+
+@media screen and (min-height: 800px) {
+  .modal-content {
+    padding-top: 40rpx;
+  }
+  
+  .modal-body {
+    max-height: 85vh;
+  }
+}
+
+/* 动画效果 */
+.category-btn:active,
+.type-btn:active,
+.filter-type-btn:active,
+.submit-btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+/* 记录详情弹窗样式 */
+.record-detail {
+  padding: 20rpx 0;
+}
+
+.record-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30rpx;
+}
+
+.record-detail-icon {
+  width: 100rpx;
+  height: 100rpx;
+  background: #f0f2f5;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 50rpx;
+  margin-right: 20rpx;
+}
+
+.record-detail-type {
+  font-size: 32rpx;
+  font-weight: bold;
+  padding: 10rpx 30rpx;
+  border-radius: 30rpx;
+  color: #fff;
+}
+
+.record-detail-type.expense {
+  background: #ff4d4f;
+}
+
+.record-detail-type.income {
+  background: #52c41a;
+}
+
+.record-detail-amount {
+  font-size: 60rpx;
+  font-weight: bold;
+  text-align: center;
+  margin: 30rpx 0;
+}
+
+.record-detail-amount.expense {
+  color: #ff4d4f;
+}
+
+.record-detail-amount.income {
+  color: #52c41a;
+}
+
+.record-detail-info {
+  background: #f8f9fa;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  color: #999;
+  font-size: 28rpx;
+}
+
+.detail-value {
+  color: #333;
+  font-size: 28rpx;
+  font-weight: 500;
+  max-width: 70%;
+  text-align: right;
+  word-break: break-all;
+}
+
+.record-detail-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 20rpx;
+}
+
+.detail-action-btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 12rpx;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.detail-action-btn.edit {
+  background: #f5f7fa;
+  color: #4facfe;
+}
+
+.detail-action-btn.delete {
+  background: #fff1f0;
+  color: #ff4d4f;
+}

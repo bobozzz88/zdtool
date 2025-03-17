@@ -1,0 +1,22 @@
+<view class="container">
+  <view class="header">
+    <text class="title">待办事项</text>
+  </view>
+
+  <view class="task-list">
+    <view class="task-item" wx:for="{{tasks}}" wx:key="id" bindtap="completeTask" data-id="{{item.id}}">
+      <view class="task-info">
+        <text class="task-title">{{item.title}}</text>
+        <text class="task-assignee">{{item.assignee}}</text>
+        <text class="task-deadline">{{item.deadline}}</text>
+      </view>
+      <view class="task-status {{item.status === '已完成' ? 'completed' : ''}}">
+        <text>{{item.status}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="add-btn" bindtap="addTask">
+    <text>添加任务</text>
+  </view>
+</view>

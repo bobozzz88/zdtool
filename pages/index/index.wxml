@@ -1,0 +1,174 @@
+<!--index.wxml-->
+<view class="container">
+  <!-- 背景装饰 -->
+  <view class="bg-decoration">
+    <view class="bg-circle circle1"></view>
+    <view class="bg-circle circle2"></view>
+  </view>
+
+  <!-- 头部区域 -->
+  <view class="header">
+    <image class="logo" src="/images/logo.png" mode="aspectFit"></image>
+    <view class="slogan">
+      <view class="title">{{motto}}</view>
+      <view class="subtitle">AI智能记账 · 数据洞察 · 理财助手</view>
+    </view>
+  </view>
+
+  <!-- 已登录状态 -->
+  <block wx:if="{{isLogin}}">
+    <view class="user-card">
+      <view class="user-info">
+        <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+        <view class="user-detail">
+          <view class="nickname">{{userInfo.nickName}}</view>
+          <view class="welcome-text">欢迎回来</view>
+        </view>
+      </view>
+      <view class="logout-btn" bindtap="logout">
+        <text class="icon">🚪</text>
+        <text>退出</text>
+      </view>
+    </view>
+    
+    <view class="feature-grid">
+      <!-- 快捷记账 -->
+      <view class="feature-item active" bindtap="navigateToFinance">
+        <view class="feature-icon">📝</view>
+        <view class="feature-content">
+          <view class="feature-title">快捷记账</view>
+          <view class="feature-desc">语音/图片/手动记账</view>
+        </view>
+        <view class="feature-arrow">→</view>
+      </view>
+      
+      <!-- 智能分析 -->
+      <view class="feature-item active" bindtap="navigateToAnalysis">
+        <view class="feature-icon">📊</view>
+        <view class="feature-content">
+          <view class="feature-title">智能分析</view>
+          <view class="feature-desc">消费洞察/趋势预测</view>
+        </view>
+        <view class="feature-arrow">→</view>
+      </view>
+      
+      <!-- AI助手 -->
+      <view class="feature-item active" bindtap="navigateToAiAssistant">
+        <view class="feature-icon">🤖</view>
+        <view class="feature-content">
+          <view class="feature-title">AI助手</view>
+          <view class="feature-desc">理财建议/预警提醒</view>
+        </view>
+        <view class="feature-arrow">→</view>
+      </view>
+      
+      <!-- 预算管理 -->
+      <view class="feature-item active" bindtap="navigateToBudget">
+        <view class="feature-icon">🎯</view>
+        <view class="feature-content">
+          <view class="feature-title">预算管理</view>
+          <view class="feature-desc">分类预算/目标追踪</view>
+        </view>
+        <view class="feature-arrow">→</view>
+      </view>
+    </view>
+
+    <!-- 数据概览 -->
+    <view class="data-overview">
+      <view class="overview-title">本月概览</view>
+      <view class="overview-grid">
+        <view class="overview-item">
+          <text class="label">支出</text>
+          <text class="value expense">¥{{monthlyExpense || '0.00'}}</text>
+        </view>
+        <view class="overview-item">
+          <text class="label">收入</text>
+          <text class="value income">¥{{monthlyIncome || '0.00'}}</text>
+        </view>
+        <view class="overview-item">
+          <text class="label">预算剩余</text>
+          <text class="value">¥{{budgetRemaining || '0.00'}}</text>
+        </view>
+        <view class="overview-item">
+          <text class="label">本月结余</text>
+          <text class="value {{monthlyBalance >= 0 ? 'income' : 'expense'}}">¥{{monthlyBalance || '0.00'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- AI洞察 -->
+    <view class="ai-insights">
+      <view class="insights-header">
+        <text class="insights-title">AI洞察</text>
+        <text class="refresh-btn" bindtap="refreshInsights">刷新</text>
+      </view>
+      <view class="insights-content">
+        <swiper class="insights-swiper" autoplay circular interval="3000">
+          <swiper-item wx:for="{{aiInsights}}" wx:key="index">
+            <view class="insight-item">
+              <text class="icon">💡</text>
+              <text class="text">{{item}}</text>
+            </view>
+          </swiper-item>
+        </swiper>
+      </view>
+    </view>
+  </block>
+
+  <!-- 未登录状态 -->
+  <block wx:else>
+    <view class="intro-section">
+      <view class="intro-item">
+        <text class="intro-icon">🎯</text>
+        <text class="intro-text">智能语音记账</text>
+      </view>
+      <view class="intro-item">
+        <text class="intro-icon">📊</text>
+        <text class="intro-text">多维数据分析</text>
+      </view>
+      <view class="intro-item">
+        <text class="intro-icon">🤖</text>
+        <text class="intro-text">AI理财助手</text>
+      </view>
+    </view>
+    
+    <view class="auth-section">
+      <view class="auth-title">开启智能记账新时代</view>
+      <view class="auth-subtitle">微信登录后使用完整功能</view>
+      <button class="auth-btn" bindtap="getUserProfile">
+        <text class="icon">🔐</text>
+        <text>微信快捷登录</text>
+      </button>
+    </view>
+
+    <view class="preview-section">
+      <view class="preview-title">
+        <text class="line"></text>
+        <text>核心功能预览</text>
+        <text class="line"></text>
+      </view>
+      <view class="preview-grid">
+        <view class="preview-item">
+          <view class="preview-icon">🎙️</view>
+          <view class="preview-name">语音记账</view>
+          <view class="preview-desc">说话即可记账</view>
+        </view>
+        <view class="preview-item">
+          <view class="preview-icon">📷</view>
+          <view class="preview-name">票据识别</view>
+          <view class="preview-desc">拍照自动录入</view>
+        </view>
+        <view class="preview-item">
+          <view class="preview-icon">🤖</view>
+          <view class="preview-name">智能分类</view>
+          <view class="preview-desc">自动对账归类</view>
+        </view>
+        <view class="preview-item">
+          <view class="preview-icon">📊</view>
+          <view class="preview-name">数据洞察</view>
+          <view class="preview-desc">消费习惯分析</view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>
