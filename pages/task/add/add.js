@@ -62,4 +62,4 @@ Page({
       icon: 'success'
     });
   }
-})}
+})
